@@ -229,3 +229,45 @@
   .hpbar { width: 150px; }
   .hud-stats { display: none; }
 }
+
+/* ══════════ 원작 고증판 추가 UI ══════════ */
+/* 출진 — 부대장 선택 */
+.dp-leaders {
+  display: flex; flex-direction: column; gap: 6px; margin: 10px 0 4px;
+  background: rgba(30, 44, 70, .4); border: 1px solid #2b3d5e;
+  border-radius: 10px; padding: 10px 12px; font-size: 13.5px; color: #c3d0e4;
+}
+.dp-leaders b { color: #ffd76a; }
+.dp-leaders select {
+  background: #16233c; color: #dfe8f5; border: 1px solid #33486e;
+  border-radius: 8px; padding: 4px 8px; font-size: 13px; margin-left: 4px;
+}
+.dp-lead {
+  font-style: normal; font-size: 10px; color: #0d1424;
+  background: #ffd76a; border-radius: 6px; padding: 1px 6px; margin-left: 6px;
+}
+
+/* 초상 — 소환수 */
+.fq-port.summon { background: rgba(30, 70, 60, .65); border-style: dashed; }
+
+/* 인물 도감 */
+.fq-dialog.codex { align-items: center; cursor: default; }
+.codex-box {
+  width: min(760px, 94vw); max-height: 86vh; display: flex; flex-direction: column;
+  background: rgba(10, 18, 34, .97); border: 2px solid #3c5584;
+  border-radius: 14px; padding: 18px 20px;
+}
+.codex-box h2 { color: #ffd76a; font-size: 20px; margin-bottom: 10px; }
+.codex-body { overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 8px; }
+.cx-row {
+  background: rgba(30, 44, 70, .45); border-left: 4px solid var(--c, #456);
+  border-radius: 8px; padding: 8px 12px;
+}
+.cx-row.unknown { opacity: .45; }
+.cx-nm { font-weight: 800; color: #dfe8f5; font-size: 14.5px; }
+.cx-nm em { font-style: normal; font-weight: 400; color: #9db1cf; font-size: 12px; margin-left: 6px; }
+.cx-row p { margin: 4px 0 0; font-size: 13px; line-height: 1.6; color: #c3d0e4; }
+.codex-box .btn { margin-top: 12px; align-self: center; }
+
+/* 상단바 아이템 표시 */
+#stItems { color: #ffd76a; font-size: 13px; }
