@@ -1,14 +1,16 @@
 name: Deploy GitHub Pages
 
+# main에 푸시될 때마다 저장소 루트(정적 사이트)를 gh-pages 브랜치로 배포.
+# gh-pages 브랜치 기반 Pages는 저장소 기본 토큰만으로 동작한다
+# (Pages API 방식은 GITHUB_TOKEN 권한 부족으로 사이트 생성이 불가).
+
 on:
   push:
     branches: [main]
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
   group: pages
@@ -17,20 +19,12 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Pages (사이트 자동 활성화)
-        uses: actions/configure-pages@v5
+      - name: Deploy to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          enablement: true
-      - name: Upload site (정적 파일 그대로 배포)
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: .
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
+          publish_branch: gh-pages
