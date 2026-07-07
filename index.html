@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0d0b1a">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RZW78R7430"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-RZW78R7430');
+</script>
+<title>퍼스트 퀸 IV 재현 — 바르시아 전기</title>
+<link rel="stylesheet" href="css/common.css?v=20260707A">
+<link rel="stylesheet" href="css/firstqueen.css?v=20260707A">
+</head>
+<body class="fq-body">
+
+  <!-- ══════════ 타이틀 ══════════ -->
+  <section class="fq-screen on" id="scr-title">
+    <div class="fq-title-box">
+      <p class="fq-title-sub">고전 명작 「ごちゃキャラ」 실시간 난전 재현 목업</p>
+      <h1 class="fq-logo">FIRST QUEEN <span>IV</span></h1>
+      <p class="fq-title-kr">퍼스트 퀸 IV — 바르시아 전기</p>
+      <div class="fq-title-btns">
+        <button class="btn primary big" id="btnNew">⚔️ 처음부터</button>
+        <button class="btn big" id="btnContinue">📜 이어하기</button>
+      </div>
+      <div class="fq-howto">
+        <h4>조작법</h4>
+        <p>🕹️ 이동: <b>방향키 / WASD</b> (모바일: 좌측 조이스틱) · 적과 부딪치면 자동 공격</p>
+        <p>✨ 특수능력: <b>스페이스</b> · 캐릭터 교대: <b>Tab</b> 또는 하단 초상 클릭</p>
+        <p>🚩 부대 명령: <b>1</b> 자유 전투 / <b>2</b> 집합 / <b>3</b> 돌격 · 퇴각: <b>ESC</b></p>
+        <p class="fq-dim">부대원은 AI로 스스로 싸웁니다. 피로도(FT)가 높으면 방어가 급락하니 무리한 연전은 금물!
+          이름 있는 영웅이 전사하면 <b>영구히 돌아오지 않습니다.</b></p>
+      </div>
+      <p class="fq-credit">원작: 呉ソフトウェア工房 「ファーストクイーンIV」(1994) 오마주 · 웹 재현 목업</p>
+    </div>
+  </section>
+
+  <!-- ══════════ 전략 맵 ══════════ -->
+  <section class="fq-screen" id="scr-strategy">
+    <header class="fq-topbar">
+      <h2>🗺️ 로그리스 대륙 전략도</h2>
+      <div class="fq-topinfo">
+        <span>턴 <b id="stTurn">1</b></span>
+        <span>원정군 <b id="stArmy">16명</b></span>
+        <span>평균 <b id="stLvl">Lv1</b></span>
+        <button class="btn ghost" id="stMenuBtn">🏠 타이틀</button>
+      </div>
+    </header>
+    <div class="fq-strategy-wrap">
+      <div class="fq-map-panel">
+        <canvas id="stCanvas" width="860" height="580"></canvas>
+      </div>
+      <aside class="fq-side">
+        <div class="fq-box" id="regionInfo"></div>
+        <div class="fq-box">
+          <h3>🎖️ 원정군 명부</h3>
+          <div id="rosterBox" class="fq-roster"></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ══════════ 출진(배치) ══════════ -->
+  <section class="fq-screen" id="scr-deploy">
+    <div class="fq-deploy-box">
+      <h2 id="dpTitle">출진</h2>
+      <p id="dpDesc" class="fq-dim"></p>
+      <p id="dpCount" class="fq-count"></p>
+      <div class="dp-list" id="dpList"></div>
+      <div class="dp-actions">
+        <button class="btn" id="dpBack">← 돌아가기</button>
+        <button class="btn primary big" id="dpGo">⚔️ 출진!</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ 전투 ══════════ -->
+  <section class="fq-screen" id="scr-battle">
+    <div class="fq-battle-wrap">
+      <header class="fq-hud">
+        <div class="hud-left">
+          <div class="hud-name" id="hudName">―</div>
+          <div class="hud-bars">
+            <div class="hpbar"><div class="hpfill" id="hudHpBar"></div><span id="hudHpTxt"></span></div>
+            <div class="ftbar" title="피로도"><div class="ftfill" id="hudFtBar"></div><i>FT</i></div>
+          </div>
+          <div class="hud-stats" id="hudStats"></div>
+        </div>
+        <div class="hud-right">
+          <span class="hud-count" id="hudCount"></span>
+          <div class="hud-orders">
+            <button class="ord" id="ord-free">1 자유</button>
+            <button class="ord" id="ord-gather">2 집합</button>
+            <button class="ord" id="ord-charge">3 돌격</button>
+          </div>
+          <button class="btn ghost sm" id="btnRetreat">🏳️ 퇴각</button>
+        </div>
+      </header>
+      <div class="fq-canvas-wrap">
+        <canvas id="bCanvas" width="960" height="600"></canvas>
+        <!-- 모바일 조작 -->
+        <div class="joy" id="joyPad"><div class="joy-knob" id="joyKnob"></div></div>
+        <div class="touch-btns">
+          <button class="tbtn" id="btnSpecial">✨ ―</button>
+          <button class="tbtn" id="btnSwitch">🔄 교대</button>
+        </div>
+      </div>
+      <footer class="fq-portraits" id="portraitBar"></footer>
+    </div>
+  </section>
+
+  <!-- ══════════ 결과 ══════════ -->
+  <section class="fq-screen" id="scr-result">
+    <div class="fq-result-box">
+      <h2 id="rsTitle"></h2>
+      <div id="rsBody"></div>
+      <button class="btn primary big" id="rsNext">계속 ▶</button>
+    </div>
+  </section>
+
+  <!-- ══════════ 대화 오버레이 ══════════ -->
+  <div class="fq-dialog" id="dlgOverlay">
+    <div class="dlg-box">
+      <span class="dlg-name" id="dlgName"></span>
+      <p class="dlg-text" id="dlgText"></p>
+      <span class="dlg-more" id="dlgMore">▼</span>
+    </div>
+  </div>
+
+<script src="js/fq_data.js?v=20260707A"></script>
+<script src="js/firstqueen.js?v=20260707A"></script>
+</body>
+</html>
